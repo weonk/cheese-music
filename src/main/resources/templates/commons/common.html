@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="header(activeParam)" class="sticky">
+        <nav class="top-bar" data-topbar>
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">芝士YELLOW</a></h1>
+                </li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+            <section class="top-bar-section">
+                <ul class="left">
+                    <li id="hot-single" th:class="${activeParam}==1?'active':''"><a th:href="${activeParam}==1?'#':'/hotSingle'">热门单曲</a></li>
+                    <li id="hot-list" th:class="${activeParam}==2?'active':''"><a th:href="${activeParam}==2?'#':'/hotSheet/165'">热门歌单</a></li>
+                    <li id="hot-mv" th:class="${activeParam}==3?'active':''"><a th:href="${activeParam}==3?'#':'/hotMV/0/0'">热门MV</a></li>
+                    <li id="hot-pick" th:class="${activeParam}==4?'active':''"><a th:href="${activeParam}==4?'#':'/songTable'">点歌台</a></li>
+                    <li id="hot-his" th:class="${activeParam}==5?'active':''"><a th:href="${activeParam}==5?'#':''">历史记录</a></li>
+                </ul>
+
+                <ul>
+                    <li>
+                        <input class="key-word" name="keyWord" style="width: 300px; margin-left: 45px;" th:if="${keyWord}" th:value="${keyWord}">
+                        <input class="key-word" th:unless="${keyWord}" name="keyWord" style="width: 300px; margin-left: 45px;" value="ed sheeran">
+                    </li>
+                    <li><a id="btn-search" class="button"><i class="fa fa-search" style="color: white;"></i></a></li>
+                </ul>
+
+
+                <ul class="right">
+                    <li><a th:if="${session.user}" th:text="${session.user.getAccount()}"></a></li>
+                    <li><a th:unless="${session.user}" th:text="'游客'"></a></li>
+                </ul>
+            </section>
+        </nav>
+    </div>
+
+    <div th:fragment="pickModal" id="pickModal" class="reveal-modal small" data-reveal>
+        <h3 class="subheader" align="center">感谢你的点歌</h3>
+        <label>这首歌送给：
+            <input id="song-order-name">
+        </label>
+        <label>留言给他（她）：
+            <textarea id="song-order-leave" rows="6" placeholder="请不要超过500字"></textarea>
+        </label>
+        <div id="pick-error-info" data-alert class="alert-box info radius" style="margin-top: 10px;display: none;">
+            <strong>警告！</strong> 请输入正确的点歌信息.
+            <a onclick="$('#pick-error-info').fadeOut();" class="right">&times;</a>
+        </div>
+        <div class="right">
+            <button class="button tiny radius" id="pick-btn">确定</button>
+        </div>
+
+        <a class="close-reveal-modal">&times;</a>
+    </div>
+
+</body>
+</html>

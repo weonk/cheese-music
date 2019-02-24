@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>芝士YELLOW-点歌台</title>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/foundation/5.5.3/css/foundation.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/foundation.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/vendor/modernizr.js"></script>
+    <link href="/css/common-style.css" rel="stylesheet">
+    <script src="/js/canvas/canvas-particle.js"></script>
+    <script src="/js/common.js"></script>
+</head>
+<body id="mydiv">
+    <div th:replace="commons/common::header(4)"></div>
+    <div style="height: 20px;"></div>
+    <div class="context row">
+        <div class="panel large-9 columns" style="height: 900px;">
+            <div>
+                <h3 align="center" class="subheader" style="color: white;"><i class="fa fa-headphones"></i>&nbsp;当前播放-</h3>
+            </div>
+        </div>
+        <div class="large-3 columns">
+            <textarea class="panel large-12 columns" style="background-color: #f2f2f2; height: 800px; resize: none;"></textarea>
+            <div class="row collapse postfix-radius">
+                <div class="small-9 columns">
+                    <input type="text" placeholder="请输入要发送的内容" style="height: 50px;">
+                </div>
+                <div class="small-3 columns">
+                    <button class="button postfix" style="height: 50px;">发送</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

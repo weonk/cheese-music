@@ -1,0 +1,56 @@
+body {
+    height: 100%;
+    width: 100%;
+    background-image: -webkit-linear-gradient(to top, #30cfd0 0%, #330867 100%);
+    background-image: -moz-linear-gradient(to top, #30cfd0 0%, #330867 100%);
+    background-image: -o-linear-gradient(to top, #30cfd0 0%, #330867 100%);
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.context {
+    max-width: 90%;
+}
+.song-hover-title {
+    height: 50px;
+}
+
+.song-hover {
+    height: 48px;
+    padding-top: 12px;
+}
+.song-hover:hover {
+    background-color: azure;
+}
+
+.song-title-style {
+    font-size: 18px;
+    color: white;
+}
+.btn-play {
+    color: lightskyblue;
+    visibility: hidden;
+}
+.song-pick {
+    color: chocolate;
+    visibility: hidden;
+}
+.song-name,.song-time,.song-index {
+    color: white;
+}
+.panel {
+    border: rgba(242,242,242,0.3);
+    background-color: rgba(242,242,242,0.3);
+}
+
+.desc-part {
+    margin-top: 300px;
+}
+.desc-part h4 {
+    color: white;
+}
+.desc-part p {
+    color: white;
+}

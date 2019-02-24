@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>芝士YELLOW-热门MV</title>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/foundation/5.5.3/css/foundation.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/foundation.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/vendor/modernizr.js"></script>
+    <link href="/css/common-style.css" rel="stylesheet">
+    <script src="/js/canvas/canvas-particle.js"></script>
+    <script src="/js/common.js"></script>
+    <style>
+        .mv-block {
+            height: 290px;
+        }
+        .mv-title {
+            margin-top: 10px;
+            font-size: 13px;
+            width: 250px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .mv-title a {
+            color: white;
+        }
+        .mv-title a:hover {
+            color: limegreen;
+        }
+        .mv-singer {
+            font-size: 14px;
+            width: 250px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .mv-singer a:hover {
+            color: limegreen;
+        }
+        .mv-pic {
+            cursor: pointer;
+            width: 270px;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        .mv-pic img {
+            width: 270px;
+            height: 250px;
+            top: 0;
+            position: relative;
+            left: 0;
+            -webkit-transition: -webkit-transform 0.3s;
+            -moz-transition: -moz-transform 0.3s;
+            -o-transition: -o-transform 0.3s;
+            transition: transform 0.3s;
+        }
+        .mv-pic img:hover {
+            -webkit-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+            -o-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body id="mydiv">
+    <div th:replace="commons/common::header(3)"></div>
+    <div style="height: 20px;"></div>
+    <div class="panel row" style="max-width: 90%;">
+        <div>
+            <h2 align="center" class="subheader" style="color: white;">M&nbsp&nbspV&nbsp&nbsp推&nbsp&nbsp荐</h2>
+        </div>
+        <div style="margin-top: 10px;">
+            <dl class="sub-nav">
+                <dt>分类:</dt>
+                <dd id="area-0"><a href="/hotMV/0/0">为你推荐</a></dd>
+                <dd id="area-1"><a href="/hotMV/1/0">内地</a></dd>
+                <dd id="area-2"><a href="/hotMV/2/0">港台</a></dd>
+                <dd id="area-3"><a href="/hotMV/3/0">欧美</a></dd>
+                <dd id="area-4"><a href="/hotMV/4/0">韩国</a></dd>
+                <dd id="area-5"><a href="/hotMV/5/0">日本</a></dd>
+            </dl>
+        </div>
+
+        <div th:each="mv : ${mvList}" class="large-3 columns mv-block">
+            <div class="mv-pic">
+                <a data-reveal-id="mvModal" class="mv-play"><img th:src="${mv.pic}"/></a>
+                <input type="hidden" th:value="${mv.url}">
+            </div>
+            <div class="mv-title">
+                <a th:text="${mv.name}" data-reveal-id="mvModal" class="mv-play"></a>
+                <input type="hidden" th:value="${mv.url}">
+            </div>
+            <div class="mv-singer">
+                <a th:text="${mv.singer}"></a>
+            </div>
+            <span class="label" th:text="'播放量：' + ${mv.playCount}"></span>
+        </div>
+
+
+        <div class="pagination-centered">
+            <ul class="pagination">
+                <li class="arrow"><a th:href="'/hotMV/' + ${area} + '/' + ${(offset + 4) % 5}">«</a></li>
+                <li id="p-1"><a th:href="'/hotMV/' + ${area} + '/0'">1</a></li>
+                <li id="p-2"><a th:href="'/hotMV/' + ${area} + '/1'">2</a></li>
+                <li id="p-3"><a th:href="'/hotMV/' + ${area} + '/2'">3</a></li>
+                <li id="p-4"><a th:href="'/hotMV/' + ${area} + '/3'">4</a></li>
+                <li id="p-5"><a th:href="'/hotMV/' + ${area} + '/4'">5</a></li>
+                <li class="arrow"><a th:href="'/hotMV/' + ${area} + '/' + ${(offset + 1) % 5}">»</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="mvModal" class="reveal-modal" data-reveal>
+        <video id="mv-player" style="width: 100%; height: 100%;" controls autoplay></video>
+    </div>
+
+</body>
+<script th:inline="javascript">
+    $(function () {
+        switch (parseInt([[${area}]])) {
+            case 0:
+                $('#area-0').addClass('active');
+                break;
+            case 1:
+                $('#area-1').addClass('active');
+                break;
+            case 2:
+                $('#area-2').addClass('active');
+                break;
+            case 3:
+                $('#area-3').addClass('active');
+                break;
+            case 4:
+                $('#area-4').addClass('active');
+                break;
+            case 5:
+                $('#area-5').addClass('active');
+                break;
+        }
+        switch (parseInt([[${offset}]])) {
+            case 0:
+                $('#p-1').addClass('current');
+                break;
+            case 1:
+                $('#p-2').addClass('current');
+                break;
+            case 2:
+                $('#p-3').addClass('current');
+                break;
+            case 3:
+                $('#p-4').addClass('current');
+                break;
+            case 4:
+                $('#p-5').addClass('current');
+                break;
+        }
+
+        $('.mv-play').click(function () {
+            var mvUrl = $(this).next('input').val();
+            if ($('#mvModal video').attr('src') !== mvUrl) {
+                $('#mvModal video').attr('src', mvUrl);
+            }
+        });
+    })
+
+</script>
+</html>

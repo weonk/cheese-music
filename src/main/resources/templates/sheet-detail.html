@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="'芝士YELLOW-' + ${sheet.title}"></title>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/foundation/5.5.3/css/foundation.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/foundation.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/vendor/modernizr.js"></script>
+    <link href="/css/common-style.css" rel="stylesheet">
+    <script src="/js/canvas/canvas-particle.js"></script>
+    <script src="/js/common.js"></script>
+    <style>
+        .sheet-author a {
+            color: white;
+        }
+        .sheet-author a:hover {
+            color: limegreen;
+        }
+    </style>
+</head>
+<body id="mydiv">
+    <div th:replace="commons/common::header(0)"></div>
+    <div style="height: 20px;"></div>
+    <div class="context panel row">
+        <div class="large-9 columns">
+            <div>
+                <div class="large-4 columns" style="width: 250px;height: 250px;">
+                    <img th:src="${sheet.logo}">
+                </div>
+                <div class="large-8 columns">
+                    <div>
+                        <h2 th:text="${sheet.title}" style="color: white;"></h2>
+                    </div>
+                    <div class="sheet-author">
+                        <a><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp&nbsp[[${sheet.author}]]</a>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <span class="label radius" th:text="'歌曲数目：' + ${sheet.songnum}"></span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="button success small" id="play-all"><i class="fa fa-headphones"></i>&nbsp全部播放</button>
+                    </div>
+
+                </div>
+            </div>
+            <div style="margin-top: 300px;">
+                <div class="song-hover-title">
+                    <b class="large-7 columns song-title-style">&nbsp&nbsp&nbsp&nbsp歌曲</b>
+                    <b class="large-2 columns song-title-style">&nbsp;</b>
+                    <b class="large-2 columns song-title-style">歌手</b>
+                    <b class="large-1 columns song-title-style">时长</b>
+                </div>
+
+                <div th:each="song : ${sheet.songs}" class="song-hover" onmouseenter="songListHover(event)" onmouseleave="songListOut(event)">
+                    <div class="large-7 columns">
+                        <span class="song-name" th:text="${songStat.count + '&nbsp&nbsp&nbsp' + song.name}"></span>
+                    </div>
+                    <div class="large-1 columns">
+                        <a class="btn-play">试听</a>
+                        <input type="hidden" th:value="${songStat.index}">
+                    </div>
+                    <div class="large-1 columns">
+                        <a class="song-pick">点歌</a>
+                    </div>
+                    <div class="large-2 columns song-singer">
+                        <a th:text="${song.singer}" href="#"></a>
+                    </div>
+                    <div class="large-1 columns">
+                        <span class="song-time" th:text="${song.time}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="large-3 columns">
+            <div class="desc-part">
+                <h4>简介</h4>
+                <p th:if="${sheet.desc} == ''">暂无简介</p>
+                <p th:text="${sheet.desc}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="aplayer"></div>
+
+</body>
+<script th:inline="javascript">
+    
+    var ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 3,
+        volume: 0.7,
+        mutex: true,
+        listFolded: false,
+        listMaxHeight: '260px',
+        audio: [
+        ]
+    });
+    
+    $(function () {
+        var songList = [[${sheet.songs}]];
+        $.each(songList, function (i, item) {
+            ap.list.add([{
+                name: item.name,
+                artist: item.singer,
+                url: item.url,
+                cover: item.pic,
+                lrc: item.lrc
+            }])
+        });
+
+        $('.btn-play').click(function () {
+            ap.list.switch($(this).next('input').val());
+            ap.play();
+        });
+
+        $('#play-all').click(function () {
+            ap.list.switch(0);
+            ap.play();
+        });
+
+        ap.on('play', function () {
+            $.each(songList, function (i, item) {
+                if (item.url === ap.audio.src) {
+                    $('title').text(item.name + ' - ' + item.singer);
+                    return false;
+                }
+            })
+        });
+    })
+</script>
+</html>
