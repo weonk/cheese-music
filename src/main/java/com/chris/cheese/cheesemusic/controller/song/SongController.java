@@ -1,5 +1,6 @@
 package com.chris.cheese.cheesemusic.controller.song;
 
+import com.chris.cheese.cheesemusic.service.SongOrderService;
 import com.chris.cheese.cheesemusic.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SongController {
     @Autowired
     private SongService songService;
+
+    @Autowired
+    private SongOrderService songOrderService;
 
     @RequestMapping("/hotSingle")
     public String hotSingle(Model model) {
@@ -54,7 +58,8 @@ public class SongController {
     }
 
     @RequestMapping("/songTable")
-    public String songTable() {
+    public String songTable(Model model) {
+        model.addAttribute("songQueryVoList", songOrderService.findByNew());
         return "song-table";
     }
 }

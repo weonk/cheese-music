@@ -1,5 +1,7 @@
 package com.chris.cheese.cheesemusic.pojo.songmodel;
 
+import com.chris.cheese.cheesemusic.pojo.SongDO;
+
 public class Song {
     private String id;
     private String name;
@@ -63,5 +65,17 @@ public class Song {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public SongDO toSongDO() {
+        SongDO songDO = new SongDO();
+        songDO.setId(this.id);
+        songDO.setSongName(this.name);
+        songDO.setSongSinger(this.singer);
+        songDO.setUrl(this.url);
+        songDO.setPic(this.pic);
+        songDO.setLrc(this.lrc);
+        songDO.setSongTime(this.time);
+        return songDO;
     }
 }

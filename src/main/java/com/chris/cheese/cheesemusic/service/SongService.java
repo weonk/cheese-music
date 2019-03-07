@@ -85,7 +85,7 @@ public class SongService {
         return songResponse.getData();
     }
 
-    private static Song songTimeFormat(Song song) {
+    public static Song songTimeFormat(Song song) {
         StringBuilder stringBuilder = new StringBuilder();
         int songTime = Integer.parseInt(song.getTime());
         int s = songTime % 60;

@@ -11,5 +11,7 @@ public interface SongOrderDao extends JpaRepository<SongOrderDO, Long> {
 
     List<SongOrderDO> findAllByUserIdOrderByPickTimeDesc(Long userId);
 
-    List<SongOrderDO> findAllByPickStatus(String pickStatus);
+    List<SongOrderDO> findAllByPickStatusOrderByPickTimeDesc(String pickStatus);
+
+    List<SongOrderDO> findAllByPickStatusOrderByPickTimeAsc(String pickStatus);
 }

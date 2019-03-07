@@ -25,6 +25,8 @@ public class SongOrderService {
     private UserDao userDao;
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
+    @Autowired
+    private SongService songService;
 
     private final static String OLD_STATUS = "OLD_STATUS";
     private final static String NEW_STATUS = "NEW_STATUS";
@@ -47,7 +49,7 @@ public class SongOrderService {
     }
 
     public List<SongQueryVo> findByOld() {
-        List<SongOrderDO> songOrderDOList = songOrderDao.findAllByPickStatus(OLD_STATUS);
+        List<SongOrderDO> songOrderDOList = songOrderDao.findAllByPickStatusOrderByPickTimeDesc(OLD_STATUS);
         if (songOrderDOList != null && songOrderDOList.size() > 0) {
             return doFill(songOrderDOList);
         } else {
@@ -56,7 +58,7 @@ public class SongOrderService {
     }
 
     public List<SongQueryVo> findByNew() {
-        List<SongOrderDO> songOrderDOList = songOrderDao.findAllByPickStatus(NEW_STATUS);
+        List<SongOrderDO> songOrderDOList = songOrderDao.findAllByPickStatusOrderByPickTimeAsc(NEW_STATUS);
         if (songOrderDOList != null && songOrderDOList.size() > 0) {
             return doFill(songOrderDOList);
         } else {
@@ -74,7 +76,8 @@ public class SongOrderService {
             SongQueryVo songQueryVo = new SongQueryVo();
             songQueryVo.setSongOrderDO(item);
             songQueryVo.setUserDO(userDao.findById(item.getUserId()).get());
-            songQueryVo.setSongDO(songDao.findById(item.getSongId()).get());
+            SongDO songDO = SongService.songTimeFormat(songService.getSingleSong(item.getSongId())).toSongDO();
+            songQueryVo.setSongDO(songDO);
             songQueryVoList.add(songQueryVo);
         });
         return songQueryVoList;

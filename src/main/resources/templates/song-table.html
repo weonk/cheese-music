@@ -16,14 +16,97 @@
     <link href="/css/common-style.css" rel="stylesheet">
     <script src="/js/canvas/canvas-particle.js"></script>
     <script src="/js/common.js"></script>
+    <style>
+        .box {
+            width: 300px;
+            overflow: hidden;
+        }
+
+        .animate {
+            display: inline-block;
+            white-space: nowrap;
+            animation: 10s wordsLoop linear infinite normal;
+        }
+
+        @keyframes wordsLoop {
+            0% {
+                transform: translateX(200px);
+                -webkit-transform: translateX(200px);
+            }
+            100% {
+                transform: translateX(-100%);
+                -webkit-transform: translateX(-100%);
+            }
+        }
+
+        @-webkit-keyframes wordsLoop {
+            0% {
+                transform: translateX(200px);
+                -webkit-transform: translateX(200px);
+            }
+            100% {
+                transform: translateX(-100%);
+                -webkit-transform: translateX(-100%);
+            }
+        }
+
+        .song-from a {
+            color: white;
+        }
+        .song-from a:hover {
+            color: limegreen;
+        }
+    </style>
 </head>
 <body id="mydiv">
     <div th:replace="commons/common::header(4)"></div>
     <div style="height: 20px;"></div>
     <div class="context row">
-        <div class="panel large-9 columns" style="height: 900px;">
-            <div>
-                <h3 align="center" class="subheader" style="color: white;"><i class="fa fa-headphones"></i>&nbsp;当前播放-</h3>
+        <div class="panel large-9 columns">
+            <div class="large-4 columns">
+                <img src="" alt="" style="width: 250px;height: 250px;">
+            </div>
+            <div class="large-8 columns">
+                <div class="box">
+                    <h3 class="subheader animate"><i class="fa fa-headphones"></i>&nbsp;正在播放-Way Back Home 下一首-红色高跟鞋</h3>
+                </div>
+                <div class="song-from">
+                    <a>来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>xKriss</a>
+                </div>
+                <div class="song-from" style="margin-top: 10px;">
+                    <a>送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>Juan</a>
+                </div>
+                <div style="margin-top: 10px;">
+                    <span class="label radius" style="font-size: 10px;">leave message</span>
+                </div>
+            </div>
+            <div style="margin-top: 300px;">
+                <div class="song-hover-title">
+                    <b class="large-7 columns song-title-style">&nbsp&nbsp&nbsp&nbsp歌曲</b>
+                    <b class="large-2 columns song-title-style">&nbsp;</b>
+                    <b class="large-2 columns song-title-style">歌手</b>
+                    <b class="large-1 columns song-title-style">时长</b>
+                </div>
+
+                <div th:each="song : ${songQueryVoList}" class="song-hover" onmouseenter="songListHover(event)" onmouseleave="songListOut(event)">
+                    <div class="large-7 columns">
+                        <span class="song-name" th:text="${songStat.count + '&nbsp&nbsp&nbsp' + song.songDO.songName}"></span>
+                    </div>
+                    <div class="large-1 columns">
+                        <a class="btn-play">试听</a>
+                        <input type="hidden" th:value="${songStat.index}">
+                    </div>
+                    <div class="large-1 columns">
+                        <a class="song-pick" data-reveal-id="pickModal">点歌</a>
+                        <input type="hidden" th:value="${song.songDO.id}">
+                    </div>
+                    <div class="large-2 columns song-singer">
+                        <a th:text="${song.songDO.songSinger}" href="#"></a>
+                    </div>
+                    <div class="large-1 columns">
+                        <span class="song-time" th:text="${song.songDO.songTime}"></span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="large-3 columns">
