@@ -52,6 +52,9 @@
     <div id="aplayer"></div>
 </body>
 <script th:inline="javascript">
+
+    var pickSongId;
+
     $(function () {
         var songList = [[${songList}]];
         $.each(songList, function (i, item) {
@@ -82,13 +85,14 @@
            if (![[${session.user}]]) {
                window.location.href = '/';
            }
+           pickSongId = $(this).next('input').val();
         });
 
         $('#pick-btn').click(function () {
             if ([[${session.user}]]) {
                 var toName = $('#song-order-name').val().trim();
                 var leave = $('#song-order-leave').val().trim();
-                var songId = $('.song-pick').next('input').val();
+                var songId = pickSongId;
 
                 if (toName === '' || leave.length > 500) {
                     $('#pick-error-info').fadeIn();

@@ -67,7 +67,8 @@
                         <input type="hidden" th:value="${songStat.index}">
                     </div>
                     <div class="large-1 columns">
-                        <a class="song-pick">点歌</a>
+                        <a class="song-pick" data-reveal-id="pickModal">点歌</a>
+                        <input type="hidden" th:value="${song.id}">
                     </div>
                     <div class="large-2 columns song-singer">
                         <a th:text="${song.singer}" href="#"></a>
@@ -87,6 +88,7 @@
         </div>
     </div>
 
+    <div th:replace="commons/common :: pickModal"></div>
     <div id="aplayer"></div>
 
 </body>
@@ -103,6 +105,8 @@
         audio: [
         ]
     });
+
+    var pickSongId;
     
     $(function () {
         var songList = [[${sheet.songs}]];
@@ -133,6 +137,43 @@
                     return false;
                 }
             })
+        });
+
+        $('.song-pick').click(function () {
+            if (![[${session.user}]]) {
+                window.location.href = '/';
+            }
+            pickSongId = $(this).next('input').val();
+        });
+
+        $('#pick-btn').click(function () {
+            if ([[${session.user}]]) {
+                var toName = $('#song-order-name').val().trim();
+                var leave = $('#song-order-leave').val().trim();
+                var songId = pickSongId;
+
+                if (toName === '' || leave.length > 500) {
+                    $('#pick-error-info').fadeIn();
+                } else {
+                    $.post(
+                        '/songOrder/pickSong',
+                        {
+                            userId : [[${session.user.id}]],
+                            songId : songId,
+                            toName : toName,
+                            leaveMessage : leave
+                        }, function (data) {
+                            if (data === 'success') {
+                                alert('点歌成功！');
+                            } else {
+                                alert('点歌失败，请稍后再试！');
+                            }
+                        }
+                    )
+                }
+            } else {
+                window.location.href = '/';
+            }
         });
     })
 </script>
