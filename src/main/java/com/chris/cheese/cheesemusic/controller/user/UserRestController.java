@@ -16,14 +16,21 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/signIn")
+    @RequestMapping("/signIn")
     public String signIn(UserDO userDO, HttpServletRequest request) {
         userDO = userService.signIn(userDO);
+        String response = "";
         if (userDO != null) {
             request.getSession().setAttribute("user", userDO);
-            return "success";
+            if (userDO.getAccessLevel() == 0) {
+                response = "successMember";
+            } else {
+                response = "successAdmin";
+            }
+        } else {
+            response = "fail";
         }
-        return "fail";
+        return response;
     }
 
     @PostMapping("/signUp")
@@ -39,4 +46,5 @@ public class UserRestController {
         }
         return true;
     }
+
 }

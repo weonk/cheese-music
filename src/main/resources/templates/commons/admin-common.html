@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="header(activeParam)" class="sticky">
+    <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+            <li class="name">
+                <h1><a href="#">芝士YELLOW</a></h1>
+            </li>
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+
+        <section class="top-bar-section">
+            <ul class="left">
+                <li id="hot-pick" th:class="${activeParam}==1?'active':''"><a th:href="${activeParam}==1?'#':'/songTable'">点歌台</a></li>
+                <li id="hot-his" th:class="${activeParam}==2?'active':''"><a th:href="${activeParam}==2?'#':''">历史记录</a></li>
+            </ul>
+
+            <ul class="right">
+                <li><a th:if="${session.user}" th:text="${session.user.getAccount()}"></a></li>
+                <li><a th:unless="${session.user}" th:text="'游客'"></a></li>
+            </ul>
+        </section>
+    </nav>
+</div>
+
+</body>
+</html>

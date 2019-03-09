@@ -14,8 +14,10 @@ $(function () {
                 }, function (data) {
                     if (data === 'fail') {
                         alert("用户名或密码错误！");
-                    } else if (data === 'success') {
+                    } else if (data === 'successMember') {
                         window.location.href = 'hotSingle';
+                    } else if (data === 'successAdmin') {
+                        window.location.href = 'songTable/admin'
                     } else {
                         alert("服务器繁忙，请稍后再试！");
                     }

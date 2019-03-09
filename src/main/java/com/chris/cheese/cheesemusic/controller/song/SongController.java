@@ -1,5 +1,8 @@
 package com.chris.cheese.cheesemusic.controller.song;
 
+import com.chris.cheese.cheesemusic.pojo.SongOrderDO;
+import com.chris.cheese.cheesemusic.pojo.SongOrderDetail;
+import com.chris.cheese.cheesemusic.pojo.SongQueryVo;
 import com.chris.cheese.cheesemusic.service.SongOrderService;
 import com.chris.cheese.cheesemusic.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class SongController {
@@ -57,9 +64,33 @@ public class SongController {
         return "album-detail";
     }
 
-    @RequestMapping("/songTable")
-    public String songTable(Model model) {
+    @RequestMapping("/songTable/{userId}")
+    public String songTable(Model model, @PathVariable(name = "userId") Long userId) {
         model.addAttribute("songQueryVoList", songOrderService.findByNew());
         return "song-table";
+    }
+
+    @RequestMapping("songTable/admin")
+    public String songTable(Model model) {
+        List<SongQueryVo> songQueryVoList = songOrderService.findByNew();
+        model.addAttribute("songQueryVoList", songQueryVoList);
+        List<SongOrderDetail> songOrderDetailList = songQueryVoList.stream().map(item -> {
+            SongOrderDetail songOrderDetail = new SongOrderDetail();
+            songOrderDetail.setSongId(item.getSongDO().getId());
+            songOrderDetail.setSongName(item.getSongDO().getSongName());
+            songOrderDetail.setSongSinger(item.getSongDO().getSongSinger());
+            songOrderDetail.setSongTime(item.getSongDO().getSongTime());
+            songOrderDetail.setUrl(item.getSongDO().getUrl());
+            songOrderDetail.setPic(item.getSongDO().getPic());
+            songOrderDetail.setLrc(item.getSongDO().getLrc());
+            songOrderDetail.setSongOrderId(item.getSongOrderDO().getId());
+            songOrderDetail.setToName(item.getSongOrderDO().getToName());
+            songOrderDetail.setLeaveMessage(item.getSongOrderDO().getLeaveMessage());
+            songOrderDetail.setUserId(item.getUserDO().getId());
+            songOrderDetail.setAccount(item.getUserDO().getAccount());
+            return songOrderDetail;
+        }).collect(Collectors.toList());
+        model.addAttribute("songOrderDetailList", songOrderDetailList);
+        return "admin-song-table";
     }
 }

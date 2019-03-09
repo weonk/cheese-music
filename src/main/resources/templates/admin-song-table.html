@@ -68,8 +68,9 @@
         }
     </style>
 </head>
+
 <body id="mydiv">
-    <div th:replace="commons/common::header(4)"></div>
+    <div th:replace="commons/admin-common::header(1)"></div>
     <div style="height: 20px;"></div>
     <div class="context row">
         <div class="panel large-9 columns">
@@ -78,7 +79,7 @@
             </div>
             <div class="large-8 columns">
                 <div class="box">
-                    <h3 class="subheader animate"><i class="fa fa-headphones"></i>&nbsp;正在播放-Way Back Home 下一首-红色高跟鞋</h3>
+                    <h3 class="subheader animate"><i class="fa fa-headphones"></i>&nbsp;暂无播放</h3>
                 </div>
                 <div class="song-from">
                     <a>来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>xKriss</a>
@@ -102,13 +103,9 @@
                     <div class="large-7 columns">
                         <span class="song-name" th:text="${songStat.count + '&nbsp&nbsp&nbsp' + song.songDO.songName}"></span>
                     </div>
-                    <div class="large-1 columns">
-                        <a class="btn-play">试听</a>
+                    <div class="large-2 columns">
+                        <a class="btn-play">播放</a>
                         <input type="hidden" th:value="${songStat.index}">
-                    </div>
-                    <div class="large-1 columns">
-                        <a class="song-pick" data-reveal-id="pickModal">点歌</a>
-                        <input type="hidden" th:value="${song.songDO.id}">
                     </div>
                     <div class="large-2 columns song-singer">
                         <a th:text="${song.songDO.songSinger}" href="#"></a>
@@ -131,13 +128,13 @@
                     </div>
                 </div>
             </form>
-
         </div>
-
     </div>
+    <div id="aplayer"></div>
 
 </body>
 <script th:inline="javascript">
+
     var chatSocket;
     var songSocket;
 
@@ -146,8 +143,7 @@
     }
 
     if (window.WebSocket) {
-        var account = [[${session.user.account}]]
-        chatSocket = new WebSocket('ws://localhost:8080/chatSocket/' + account);
+        chatSocket = new WebSocket("ws://localhost:8080/chatSocket/ADMIN");
         chatSocket.onmessage = function (event) {
             var ta = $('#responseText');
             ta.html(ta.html() + '<br>' + event.data);
@@ -160,7 +156,7 @@
             var ta = $('#responseText');
         };
 
-        songSocket = new WebSocket('ws://localhost:8080/songSocket/' + account);
+        songSocket = new WebSocket("ws://localhost:8080/songSocket/ADMIN");
         songSocket.onopen = function (ev) {
             console.log("连接开启");
         }
@@ -206,6 +202,33 @@
         audio: [
         ]
     });
+
+    $(function () {
+        var songOrderDetailList = [[${songOrderDetailList}]];
+        $.each(songOrderDetailList, function (i, item) {
+            ap.list.add([{
+                name: item.songName,
+                artist: item.songSinger,
+                url: item.url,
+                cover: item.pic,
+                lrc: item.lrc
+            }])
+        });
+
+        $('.btn-play').click(function () {
+            ap.list.switch($(this).next('input').val());
+            ap.play();
+        });
+
+        ap.on('play', function () {
+            $.each(songList, function (i, item) {
+                if (item.url === ap.audio.src) {
+                    $('title').text(item.name + ' - ' + item.singer);
+                    return false;
+                }
+            })
+        });
+    })
 
 
 </script>
