@@ -74,20 +74,21 @@
     <div class="context row">
         <div class="panel large-9 columns">
             <div class="large-4 columns">
-                <img src="/images/cover.jpg" style="width: 250px;height: 250px;">
+                <img id="table-image" src="/images/cover.jpg" style="width: 250px;height: 250px;">
             </div>
             <div class="large-8 columns">
                 <div class="box">
-                    <h3 class="subheader animate"><i class="fa fa-headphones"></i>&nbsp;正在播放-Way Back Home 下一首-红色高跟鞋</h3>
+                    <h3 id="table-title" class="subheader animate"><i class="fa fa-headphones"></i>&nbsp;暂无播放</h3>
                 </div>
                 <div class="song-from">
-                    <a>来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>xKriss</a>
+                    <a id="table-account">来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>xKriss</a>
                 </div>
                 <div class="song-from" style="margin-top: 10px;">
-                    <a>送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>Juan</a>
+                    <a id="table-toname">送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>Juan</a>
                 </div>
                 <div style="margin-top: 10px;">
                     <span class="label radius" style="font-size: 10px;">leave message</span>
+                    <p id="table-message"></p>
                 </div>
             </div>
             <div style="margin-top: 300px;">
@@ -102,11 +103,11 @@
                     <div class="large-7 columns">
                         <span class="song-name" th:text="${songStat.count + '&nbsp&nbsp&nbsp' + song.songDO.songName}"></span>
                     </div>
-                    <div class="large-1 columns">
-                        <a class="btn-play">试听</a>
-                        <input type="hidden" th:value="${songStat.index}">
-                    </div>
-                    <div class="large-1 columns">
+                    <!--<div class="large-1 columns">-->
+                        <!--<a class="btn-play">试听</a>-->
+                        <!--<input type="hidden" th:value="${songStat.index}">-->
+                    <!--</div>-->
+                    <div class="large-2 columns">
                         <a class="song-pick" data-reveal-id="pickModal">点歌</a>
                         <input type="hidden" th:value="${song.songDO.id}">
                     </div>
@@ -121,7 +122,7 @@
         </div>
         <div class="large-3 columns">
             <form onsubmit="return false;">
-                <div class="panel large-12 columns" id="responseText" contenteditable="true"></div>
+                <div class="panel large-12 columns" id="responseText" readonly></div>
                 <div class="row collapse postfix-radius">
                     <div class="small-9 columns">
                         <input type="text" name="message" id="message" placeholder="请输入要发送的内容" style="height: 50px;">
@@ -131,13 +132,16 @@
                     </div>
                 </div>
             </form>
-
         </div>
-
+        <div id="aplayer"></div>
     </div>
 
 </body>
 <script th:inline="javascript">
+
+    var songQueryVoList = [[${songQueryVoList}]];
+    var songOrderId = 0;
+
     var chatSocket;
     var songSocket;
 
@@ -165,7 +169,44 @@
             console.log("连接开启");
         }
         songSocket.onmessage = function (event) {
+            var messageSplite = '---->>>>';
             console.log(event.data);
+            var statusArray = event.data.split(messageSplite);
+
+            $('#table-image').attr('src',statusArray[2]);
+            $('#table-title').html('<i class="fa fa-headphones"></i>&nbsp;正在播放-' + statusArray[3] + '&nbsp;下一首-' + statusArray[4]);
+            $('#table-account').html('来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + statusArray[5]);
+            $('#table-toname').html('送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + statusArray[6]);
+            $('#table-message').html('&nbsp;&nbsp' + statusArray[7]);
+
+            if (songOrderId != statusArray[1]) {
+                ap.list.clear();
+                $.each(songQueryVoList, function (i, item) {
+                    if (statusArray[1] == item.songOrderDO.id) {
+                        ap.list.add([{
+                            name: item.songDO.songName,
+                            artist: item.songDO.songSinger,
+                            url: item.songDO.url,
+                            cover: item.songDO.pic,
+                            lrc: item.songDO.lrc
+                        }]);
+                        return ;
+                    }
+                });
+                if ('played' == statusArray[0]) {
+                    ap.play();
+                }
+                songOrderId = statusArray[1];
+            } else {
+                if ('played' == statusArray[0]) {
+                    ap.play();
+                } else if ('paused' == statusArray[0]) {
+                    ap.pause();
+                }
+            }
+
+
+
         }
         songSocket.onclose = function (ev) {
             console.log("连接关闭");
@@ -173,15 +214,6 @@
 
     } else {
         alert('你的浏览器不支持 WebSocket !');
-    }
-
-    function sendSongStatus() {
-        if (!window.WebSocket) {
-            return ;
-        }
-        if (songSocket.readyState == WebSocket.OPEN) {
-            songSocket.send(name + split + artist + split + id);
-        }
     }
 
     function send(message) {
@@ -207,6 +239,22 @@
         ]
     });
 
+    $(function () {
+
+        // $('.btn-play').click(function () {
+        //     ap.list.switch($(this).next('input').val());
+        //     ap.play();
+        // });
+
+        ap.on('play', function () {
+            $.each(songQueryVoList, function (i, item) {
+                if (item.songDO.url === ap.audio.src) {
+                    $('title').text(item.songDO.songName + ' - ' + item.songDO.songSinger);
+                    return false;
+                }
+            })
+        });
+    })
 
 </script>
 </html>

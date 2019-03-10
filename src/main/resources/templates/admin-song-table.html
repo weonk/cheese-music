@@ -75,20 +75,21 @@
     <div class="context row">
         <div class="panel large-9 columns">
             <div class="large-4 columns">
-                <img src="/images/cover.jpg" style="width: 250px;height: 250px;">
+                <img id="table-image" src="/images/cover.jpg" style="width: 250px;height: 250px;">
             </div>
             <div class="large-8 columns">
                 <div class="box">
-                    <h3 class="subheader animate"><i class="fa fa-headphones"></i>&nbsp;暂无播放</h3>
+                    <h3 class="subheader animate" id="table-title"><i class="fa fa-headphones"></i>&nbsp;暂无播放</h3>
                 </div>
                 <div class="song-from">
-                    <a>来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>xKriss</a>
+                    <a id="table-account">来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>xKriss</a>
                 </div>
                 <div class="song-from" style="margin-top: 10px;">
-                    <a>送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>Juan</a>
+                    <a id="table-toname">送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>Juan</a>
                 </div>
                 <div style="margin-top: 10px;">
                     <span class="label radius" style="font-size: 10px;">leave message</span>
+                    <p id="table-message"></p>
                 </div>
             </div>
             <div style="margin-top: 300px;">
@@ -118,13 +119,13 @@
         </div>
         <div class="large-3 columns">
             <form onsubmit="return false;">
-                <div class="panel large-12 columns" id="responseText" contenteditable="true"></div>
+                <div class="panel large-12 columns" id="responseText" contenteditable="true" readonly></div>
                 <div class="row collapse postfix-radius">
                     <div class="small-9 columns">
                         <input type="text" name="message" id="message" placeholder="请输入要发送的内容" style="height: 50px;">
                     </div>
                     <div class="small-3 columns">
-                        <button class="button postfix" style="height: 50px;" onclick="send(this.form.message.value);$('#message').val('');">发送</button>
+                        <button class="button postfix" style="height: 50px;" onclick="sendChat(this.form.message.value);$('#message').val('');">发送</button>
                     </div>
                 </div>
             </form>
@@ -171,16 +172,16 @@
         alert('你的浏览器不支持 WebSocket !');
     }
 
-    function sendSongStatus() {
+    function sendSong(message) {
         if (!window.WebSocket) {
             return ;
         }
         if (songSocket.readyState == WebSocket.OPEN) {
-            songSocket.send(name + split + artist + split + id);
+            songSocket.send(message);
         }
     }
 
-    function send(message) {
+    function sendChat(message) {
         if(!window.WebSocket) {
             return ;
         }
@@ -194,6 +195,7 @@
     var ap = new APlayer({
         container: document.getElementById('aplayer'),
         fixed: true,
+        loop: 'none',
         lrcType: 3,
         volume: 0.7,
         mutex: true,
@@ -205,29 +207,70 @@
 
     $(function () {
         var songOrderDetailList = [[${songOrderDetailList}]];
-        $.each(songOrderDetailList, function (i, item) {
-            ap.list.add([{
-                name: item.songName,
-                artist: item.songSinger,
-                url: item.url,
-                cover: item.pic,
-                lrc: item.lrc
-            }])
-        });
+        var latestSongOrderList = [[${songOrderDetailList}]];
+        var currentIndex;
+        var currentSongOrderId;
+        var currentPic;
+        var currentSongName;
+        var nextSongName;
+        var currentPickName;
+        var currentToName;
+        var currentLeaveMessage;
+        var messageSplit = '---->>>>';
 
         $('.btn-play').click(function () {
-            ap.list.switch($(this).next('input').val());
+            currentIndex = parseInt($(this).next('input').val());
+            currentSongOrderId = songOrderDetailList[currentIndex].songOrderId;
+            currentPic = songOrderDetailList[currentIndex].pic;
+            currentSongName = songOrderDetailList[currentIndex].songName;
+            currentPickName = songOrderDetailList[currentIndex].account;
+            currentToName = songOrderDetailList[currentIndex].toName;
+            currentLeaveMessage = songOrderDetailList[currentIndex].leaveMessage;
+
+            var latestIndex;
+            $.each(latestSongOrderList, function (i, item) {
+                if (item.songOrderId == songOrderDetailList[currentIndex].songOrderId) {
+                    latestIndex = i;
+                    console.log(latestIndex);
+                    return ;
+                }
+            });
+            nextSongName = latestSongOrderList.length > latestIndex + 1 ? latestSongOrderList[latestIndex + 1].songName : '暂无歌曲，赶快去点歌吧';
+            latestSongOrderList.splice(latestIndex, 1);
+
+            ap.list.clear();
+            ap.list.add([{
+                name: songOrderDetailList[currentIndex].songName,
+                artist: songOrderDetailList[currentIndex].songSinger,
+                url: songOrderDetailList[currentIndex].url,
+                cover: songOrderDetailList[currentIndex].pic,
+                lrc: songOrderDetailList[currentIndex].lrc
+            }]);
             ap.play();
+            $(this).parent().parent().fadeOut();
+
+            $('#table-image').attr('src',currentPic);
+            $('#table-title').html('<i class="fa fa-headphones"></i>&nbsp;正在播放-' + currentSongName + '&nbsp;下一首-' + nextSongName);
+            $('#table-account').html('来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + currentPickName);
+            $('#table-toname').html('送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + currentToName);
+            $('#table-message').html('&nbsp;&nbsp' + currentLeaveMessage);
+
         });
 
         ap.on('play', function () {
-            $.each(songList, function (i, item) {
+            sendSong('played' + messageSplit + currentSongOrderId + messageSplit + currentPic + messageSplit + currentSongName + messageSplit + nextSongName + messageSplit + currentPickName + messageSplit + currentToName + messageSplit + currentLeaveMessage);
+            $.each(songOrderDetailList, function (i, item) {
                 if (item.url === ap.audio.src) {
-                    $('title').text(item.name + ' - ' + item.singer);
+                    $('title').text(item.songName + ' - ' + item.songSinger);
                     return false;
                 }
             })
         });
+
+        ap.on('pause', function () {
+            sendSong('paused' + messageSplit + currentSongOrderId + messageSplit + currentPic + messageSplit + currentSongName + messageSplit + nextSongName + messageSplit + currentPickName + messageSplit + currentToName + messageSplit + currentLeaveMessage);
+        });
+
     })
 
 
