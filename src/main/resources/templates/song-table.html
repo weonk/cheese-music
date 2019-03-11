@@ -139,8 +139,8 @@
 </body>
 <script th:inline="javascript">
 
-    var songQueryVoList = [[${songQueryVoList}]];
-    var songOrderId = 0;
+    var songOrderDetailList = [[${songOrderDetailList}]];
+    var songOrderId = '';
 
     var chatSocket;
     var songSocket;
@@ -181,14 +181,14 @@
 
             if (songOrderId != statusArray[1]) {
                 ap.list.clear();
-                $.each(songQueryVoList, function (i, item) {
-                    if (statusArray[1] == item.songOrderDO.id) {
+                $.each(songOrderDetailList, function (i, item) {
+                    if (statusArray[1] == item.songOrderId) {
                         ap.list.add([{
-                            name: item.songDO.songName,
-                            artist: item.songDO.songSinger,
-                            url: item.songDO.url,
-                            cover: item.songDO.pic,
-                            lrc: item.songDO.lrc
+                            name: item.songName,
+                            artist: item.songSinger,
+                            url: item.url,
+                            cover: item.pic,
+                            lrc: item.lrc
                         }]);
                         return ;
                     }
@@ -248,36 +248,25 @@
                 var statusArray = data.split(messageSplite);
 
                 $('#table-image').attr('src',statusArray[2]);
-                $('#table-title').html('<i class="fa fa-headphones"></i>&nbsp;正在播放-' + statusArray[3] + '&nbsp;下一首-' + statusArray[4]);
-                $('#table-account').html('来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + statusArray[5]);
-                $('#table-toname').html('送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + statusArray[6]);
-                $('#table-message').html('&nbsp;&nbsp' + statusArray[7]);
+                $('#table-title').html('<i class="fa fa-headphones"></i>&nbsp;正在播放-' + statusArray[3] + '&nbsp;下一首-' + statusArray[7]);
+                $('#table-account').html('来自&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + statusArray[8]);
+                $('#table-toname').html('送给&nbsp&nbsp<i class="fa fa-user-o" aria-hidden="true"></i>' + statusArray[9]);
+                $('#table-message').html('&nbsp;&nbsp' + statusArray[10]);
 
-                if (songOrderId != statusArray[1]) {
-                    ap.list.clear();
-                    $.each(songQueryVoList, function (i, item) {
-                        if (statusArray[1] == item.songOrderDO.id) {
-                            ap.list.add([{
-                                name: item.songDO.songName,
-                                artist: item.songDO.songSinger,
-                                url: item.songDO.url,
-                                cover: item.songDO.pic,
-                                lrc: item.songDO.lrc
-                            }]);
-                            return ;
-                        }
-                    });
-                    if ('played' == statusArray[0]) {
-                        ap.play();
-                    }
-                    songOrderId = statusArray[1];
-                } else {
-                    if ('played' == statusArray[0]) {
-                        ap.play();
-                    } else if ('paused' == statusArray[0]) {
-                        ap.pause();
-                    }
+                ap.list.clear();
+                ap.list.add([{
+                    name: statusArray[3],
+                    artist: statusArray[4],
+                    url: statusArray[5],
+                    cover: statusArray[2],
+                    lrc: statusArray[6]
+                }]);
+                if ('played' == statusArray[0]) {
+                    ap.play();
+                } else if ('paused' == statusArray[0]) {
+                    ap.pause();
                 }
+                songOrderId = statusArray[1];
             }
         });
 
@@ -287,9 +276,9 @@
         // });
 
         ap.on('play', function () {
-            $.each(songQueryVoList, function (i, item) {
-                if (item.songDO.url === ap.audio.src) {
-                    $('title').text(item.songDO.songName + ' - ' + item.songDO.songSinger);
+            $.each(songOrderDetailList, function (i, item) {
+                if (item.url === ap.audio.src) {
+                    $('title').text(item.songName + ' - ' + item.songSinger);
                     return false;
                 }
             })

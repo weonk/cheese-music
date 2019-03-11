@@ -1,7 +1,5 @@
 package com.chris.cheese.cheesemusic.service;
 
-import com.chris.cheese.cheesemusic.dao.SongDao;
-import com.chris.cheese.cheesemusic.pojo.SongDO;
 import com.chris.cheese.cheesemusic.pojo.songmodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

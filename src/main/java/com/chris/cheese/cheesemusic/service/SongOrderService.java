@@ -66,6 +66,14 @@ public class SongOrderService {
         }
     }
 
+    public void doChangeStatus(Long songOrderId) {
+        SongOrderDO songOrderDO = songOrderDao.findById(songOrderId).get();
+        if (songOrderDO != null) {
+            songOrderDO.setPickStatus(OLD_STATUS);
+            songOrderDao.saveAndFlush(songOrderDO);
+        }
+    }
+
     public void doDelete(Long id) {
         songOrderDao.deleteById(id);
     }

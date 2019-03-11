@@ -8,7 +8,7 @@ public class SongOrderDetail {
     private String url;
     private String pic;
     private String lrc;
-    private Long songOrderId;
+    private String songOrderId;
     private String toName;
     private String leaveMessage;
     private Long userId;
@@ -70,11 +70,11 @@ public class SongOrderDetail {
         this.lrc = lrc;
     }
 
-    public Long getSongOrderId() {
+    public String getSongOrderId() {
         return songOrderId;
     }
 
-    public void setSongOrderId(Long songOrderId) {
+    public void setSongOrderId(String songOrderId) {
         this.songOrderId = songOrderId;
     }
 

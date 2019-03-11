@@ -7,9 +7,7 @@ import com.chris.cheese.cheesemusic.pojo.songmodel.Song;
 import com.chris.cheese.cheesemusic.service.SongOrderService;
 import com.chris.cheese.cheesemusic.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,6 +38,14 @@ public class SongOrderRestController {
         } else {
             return "fail";
         }
+    }
 
+    @PostMapping("/changed/{songOrderId}")
+    public boolean changeStatus(@PathVariable(value = "songOrderId") Long songOrderId) {
+        if (songOrderId != null && songOrderId > 0) {
+            songOrderService.doChangeStatus(songOrderId);
+            return true;
+        }
+        return false;
     }
 }

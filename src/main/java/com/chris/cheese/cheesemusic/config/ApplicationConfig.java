@@ -1,4 +1,4 @@
-package com.chris.cheese.cheesemusic;
+package com.chris.cheese.cheesemusic.config;
 
 import com.chris.cheese.cheesemusic.util.SnowflakeIdWorker;
 import org.springframework.context.annotation.Bean;

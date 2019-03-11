@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>芝士YELLOW-历史记录</title>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/foundation/5.5.3/css/foundation.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/foundation.min.js"></script>
+    <script src="https://cdn.bootcss.com/foundation/5.5.3/js/vendor/modernizr.js"></script>
+    <link href="/css/common-style.css" rel="stylesheet">
+    <script src="/js/canvas/canvas-particle.js"></script>
+    <script src="/js/common.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="/css/component.css" />
+    <script src="/js/modernizr.custom.js"></script>
 </head>
-<body>
+<body id="mydiv">
+<div th:replace="commons/admin-common::header(2)"></div>
+<div style="height: 20px;"></div>
+<div class="container">
+    <header class="clearfix">
+        <span>CHEESE YELLOW</span>
+        <h1 style="color:white;">历史记录</h1>
+    </header>
+    <div class="main">
+        <ul class="cbp_tmtimeline">
+            <li th:each="songQueryVo : ${songQueryVoList}">
+                <time class="cbp_tmtime" th:datetime="${songQueryVo.songOrderDO.pickTime}"><span th:text="${#dates.format(songQueryVo.songOrderDO.pickTime, 'yyyy-MM-dd')}"></span> <span th:text="${#dates.format(songQueryVo.songOrderDO.pickTime, 'HH:mm')}"}></span></time>
+                <div class="cbp_tmicon cbp_tmicon-phone"></div>
+                <div class="cbp_tmlabel">
+                    <h2 style="color: white" th:text="${songQueryVo.songDO.songName + ' - ' + songQueryVo.songDO.songSinger}">输了你赢了世界又如何 - 林俊杰</h2>
+                    <span class="label" style="font-size: 16px;"><i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;[[${songQueryVo.userDO.account}]]&nbsp;&nbsp;&nbsp;<i class="fa fa-hand-o-right"></i>&nbsp;&nbsp;&nbsp;[[${songQueryVo.songOrderDO.toName}]]</span>
+                    <p th:text="${songQueryVo.songOrderDO.leaveMessage}"></p>
+                </div>
+            </li>
 
+        </ul>
+    </div>
+</div>
 </body>
 </html>
