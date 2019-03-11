@@ -258,7 +258,14 @@
         });
 
         ap.on('play', function () {
-            sendSong('played' + messageSplit + currentSongOrderId + messageSplit + currentPic + messageSplit + currentSongName + messageSplit + nextSongName + messageSplit + currentPickName + messageSplit + currentToName + messageSplit + currentLeaveMessage);
+            var statusMessage = 'played' + messageSplit + currentSongOrderId + messageSplit + currentPic + messageSplit + currentSongName + messageSplit + nextSongName + messageSplit + currentPickName + messageSplit + currentToName + messageSplit + currentLeaveMessage;
+            $.post('/song/sendStatus',
+                {
+                    message: statusMessage
+                },
+                function (data) {
+            });
+            sendSong(statusMessage);
             $.each(songOrderDetailList, function (i, item) {
                 if (item.url === ap.audio.src) {
                     $('title').text(item.songName + ' - ' + item.songSinger);
@@ -268,7 +275,14 @@
         });
 
         ap.on('pause', function () {
-            sendSong('paused' + messageSplit + currentSongOrderId + messageSplit + currentPic + messageSplit + currentSongName + messageSplit + nextSongName + messageSplit + currentPickName + messageSplit + currentToName + messageSplit + currentLeaveMessage);
+            var statusMessage = 'paused' + messageSplit + currentSongOrderId + messageSplit + currentPic + messageSplit + currentSongName + messageSplit + nextSongName + messageSplit + currentPickName + messageSplit + currentToName + messageSplit + currentLeaveMessage;
+            $.post('/song/sendStatus',
+                {
+                    message: statusMessage
+                },
+                function (data) {
+            });
+            sendSong(statusMessage);
         });
 
     })
