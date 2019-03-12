@@ -54,3 +54,16 @@ body {
 .desc-part p {
     color: white;
 }
+
+.normal-name {
+    color: #3C9CFE;
+}
+
+.other-name {
+    font-weight: bold;
+    color: #3C9CFE;
+}
+
+.self-name {
+    font-weight: bold;
+}

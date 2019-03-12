@@ -66,11 +66,16 @@
             height: 800px;
             resize: none;
         }
+
+        #table-message {
+            color: white;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body id="mydiv">
     <div th:replace="commons/common::header(4)"></div>
-    <div style="height: 20px;"></div>
+    <div style="height: 60px;"></div>
     <div class="context row">
         <div class="panel large-9 columns">
             <div class="large-4 columns">
@@ -133,6 +138,7 @@
                 </div>
             </form>
         </div>
+        <div th:replace="commons/common :: pickModal"></div>
         <div id="aplayer"></div>
     </div>
 
@@ -141,6 +147,8 @@
 
     var songOrderDetailList = [[${songOrderDetailList}]];
     var songOrderId = '';
+
+    var pickSongId;
 
     var chatSocket;
     var songSocket;
@@ -155,6 +163,7 @@
         chatSocket.onmessage = function (event) {
             var ta = $('#responseText');
             ta.html(ta.html() + '<br>' + event.data);
+            ta.scrollTop(ta[0].scrollHeight);
         };
         chatSocket.onopen = function (event) {
             var ta = $('#responseText');
@@ -283,6 +292,44 @@
                 }
             })
         });
+
+        $('.song-pick').click(function () {
+            if (![[${session.user}]]) {
+                window.location.href = '/';
+            }
+            pickSongId = $(this).next('input').val();
+        });
+
+        $('#pick-btn').click(function () {
+            if ([[${session.user}]]) {
+                var toName = $('#song-order-name').val().trim();
+                var leave = $('#song-order-leave').val().trim();
+                var songId = pickSongId;
+
+                if (toName === '' || leave.length > 500) {
+                    $('#pick-error-info').fadeIn();
+                } else {
+                    $.post(
+                        '/songOrder/pickSong',
+                        {
+                            userId : [[${session.user.id}]],
+                            songId : songId,
+                            toName : toName,
+                            leaveMessage : leave
+                        }, function (data) {
+                            if (data === 'success') {
+                                alert('点歌成功！');
+                            } else {
+                                alert('点歌失败，请稍后再试！');
+                            }
+                        }
+                    )
+                }
+            } else {
+                window.location.href = '/';
+            }
+        });
+
     })
 
 </script>

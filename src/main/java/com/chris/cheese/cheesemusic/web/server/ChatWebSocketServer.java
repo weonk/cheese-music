@@ -31,7 +31,7 @@ public class ChatWebSocketServer {
 
         chatWebSocketServers.forEach(item -> {
             try {
-                item.sendMessage("欢迎" + user + " 进入点歌台！" + "\uD83D\uDC0E");
+                item.sendMessage("<span class=\"normal-name\">" + user + "</span>" + " 进入点歌台！" + "\uD83D\uDC0E");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -50,7 +50,7 @@ public class ChatWebSocketServer {
 
         chatWebSocketServers.forEach(item -> {
             try {
-                item.sendMessage(user + " 退出点歌台！" + "\uD83D\uDC0E");
+                item.sendMessage("<span class=\"normal-name\">" + user + "</span>" + " 退出点歌台！" + "\uD83D\uDC0E");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -62,9 +62,9 @@ public class ChatWebSocketServer {
         chatWebSocketServers.forEach(item -> {
             try {
                 if (item.getSession().equals(session)) {
-                    item.sendMessage("<b>我</b>： " + message);
+                    item.sendMessage("<span class=\"self-name\">我：</span> " + message);
                 } else {
-                    item.sendMessage("<b>" + user + "</b>: " + message);
+                    item.sendMessage("<span class=\"other-name\">" + user + "：</span> " + message);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
