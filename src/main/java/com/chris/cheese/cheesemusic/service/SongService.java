@@ -2,6 +2,7 @@ package com.chris.cheese.cheesemusic.service;
 
 import com.chris.cheese.cheesemusic.pojo.songmodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,28 +14,31 @@ public class SongService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Value("${cheese.music.api}")
+    private String apiUri;
+
     public List<Song> getHotSingle() {
-        SongListResponse songListResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/songList?key=579621905&id=3833853300", SongListResponse.class);
+        SongListResponse songListResponse = restTemplate.getForObject(apiUri + "music/tencent/songList?key=579621905&id=3833853300", SongListResponse.class);
         return songListResponse.getData().getSongs().stream().map(SongService::songTimeFormat).collect(Collectors.toList());
     }
 
     public List<SongSheet> getSongSheet(String categoryId) {
-        SongSheetResponse songSheetResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/hotSongList?key=579621905&sortId=3&limit=19&categoryId=" + categoryId, SongSheetResponse.class);
+        SongSheetResponse songSheetResponse = restTemplate.getForObject(apiUri + "music/tencent/hotSongList?key=579621905&sortId=3&limit=19&categoryId=" + categoryId, SongSheetResponse.class);
         return songSheetResponse.getData();
     }
 
     public List<MV> getMV(String area, Integer offset) {
-        MVResponse mvResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/hotMvList?key=579621905&limit=20&area=" + area + "&offset=" + offset, MVResponse.class);
+        MVResponse mvResponse = restTemplate.getForObject( apiUri + "music/tencent/hotMvList?key=579621905&limit=20&area=" + area + "&offset=" + offset, MVResponse.class);
         return mvResponse.getData();
     }
 
     public List getSearch(String type, String keyWord) {
         switch (type) {
             case "song":
-                SongSearchResponse songSearchResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, SongSearchResponse.class);
+                SongSearchResponse songSearchResponse = restTemplate.getForObject(apiUri + "music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, SongSearchResponse.class);
                 return songSearchResponse.getData().stream().map(SongService::songTimeFormat).collect(Collectors.toList());
             case "list":
-                SheetSearchResponse sheetDetailSearchResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, SheetSearchResponse.class);
+                SheetSearchResponse sheetDetailSearchResponse = restTemplate.getForObject( apiUri +"music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, SheetSearchResponse.class);
                 return sheetDetailSearchResponse.getData().stream().map(item -> {
                     SongSheet songSheet = new SongSheet();
                     songSheet.setId(item.getDissid());
@@ -46,7 +50,7 @@ public class SongService {
                     return songSheet;
                 }).collect(Collectors.toList());
             case "mv":
-                MVSearchResponse mvDetailSearchResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, MVSearchResponse.class);
+                MVSearchResponse mvDetailSearchResponse = restTemplate.getForObject(apiUri + "music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, MVSearchResponse.class);
                 return mvDetailSearchResponse.getData().stream().map(item -> {
                     MV mv = new MV();
                     mv.setId(item.getV_id());
@@ -59,7 +63,7 @@ public class SongService {
                     return mv;
                 }).collect(Collectors.toList());
             case "album":
-                AlbumSearchResponse albumSearchResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, AlbumSearchResponse.class);
+                AlbumSearchResponse albumSearchResponse = restTemplate.getForObject(apiUri + "music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, AlbumSearchResponse.class);
                 return albumSearchResponse.getData();
             default:
                 return null;
@@ -67,19 +71,19 @@ public class SongService {
     }
 
     public SongListData getSheet(String sheetId) {
-        SongListResponse songListResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/songList?key=579621905&id=" + sheetId, SongListResponse.class);
+        SongListResponse songListResponse = restTemplate.getForObject(apiUri + "music/tencent/songList?key=579621905&id=" + sheetId, SongListResponse.class);
         songListResponse.getData().getSongs().stream().map(SongService::songTimeFormat).collect(Collectors.toList());
         return songListResponse.getData();
     }
 
     public AlbumData getAlbum(String albumId) {
-        AlbumResponse albumResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/album?key=579621905&id=" + albumId, AlbumResponse.class);
+        AlbumResponse albumResponse = restTemplate.getForObject(apiUri + "music/tencent/album?key=579621905&id=" + albumId, AlbumResponse.class);
         albumResponse.getData().getSongs().stream().map(SongService::songTimeFormat).collect(Collectors.toList());
         return albumResponse.getData();
     }
 
     public Song getSingleSong(String singleId) {
-        SongResponse songResponse = restTemplate.getForObject("https://api.bzqll.com/music/tencent/song?key=579621905&id=" + singleId, SongResponse.class);
+        SongResponse songResponse = restTemplate.getForObject(apiUri + "music/tencent/song?key=579621905&id=" + singleId, SongResponse.class);
         return songResponse.getData();
     }
 
