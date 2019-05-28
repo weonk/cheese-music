@@ -18,12 +18,12 @@ public class SongService {
     private String apiUri;
 
     public List<Song> getHotSingle() {
-        SongListResponse songListResponse = restTemplate.getForObject(apiUri + "music/tencent/songList?key=579621905&id=3833853300", SongListResponse.class);
+        SongListResponse songListResponse = restTemplate.getForObject(apiUri + "music/netease/songList?key=579621905&id=3778678", SongListResponse.class);
         return songListResponse.getData().getSongs().stream().map(SongService::songTimeFormat).collect(Collectors.toList());
     }
 
-    public List<SongSheet> getSongSheet(String categoryId) {
-        SongSheetResponse songSheetResponse = restTemplate.getForObject(apiUri + "music/tencent/hotSongList?key=579621905&sortId=3&limit=19&categoryId=" + categoryId, SongSheetResponse.class);
+    public List<SongSheet> getSongSheet(Integer offset) {
+        SongSheetResponse songSheetResponse = restTemplate.getForObject(apiUri + "music/netease/hotSongList?key=579621905&limit=20&offset=" + offset, SongSheetResponse.class);
         return songSheetResponse.getData();
     }
 
@@ -35,18 +35,19 @@ public class SongService {
     public List getSearch(String type, String keyWord) {
         switch (type) {
             case "song":
-                SongSearchResponse songSearchResponse = restTemplate.getForObject(apiUri + "music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, SongSearchResponse.class);
+                SongSearchResponse songSearchResponse = restTemplate.getForObject(apiUri + "music/netease/search?key=579621905&s=" + keyWord + "&type=" + type, SongSearchResponse.class);
                 return songSearchResponse.getData().stream().map(SongService::songTimeFormat).collect(Collectors.toList());
             case "list":
-                SheetSearchResponse sheetDetailSearchResponse = restTemplate.getForObject( apiUri +"music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, SheetSearchResponse.class);
-                return sheetDetailSearchResponse.getData().stream().map(item -> {
+                SheetSearchResponse sheetDetailSearchResponse = restTemplate.getForObject( apiUri +"music/netease/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, SheetSearchResponse.class);
+                return sheetDetailSearchResponse.getData().getPlaylists().stream().map(item -> {
                     SongSheet songSheet = new SongSheet();
-                    songSheet.setId(item.getDissid());
-                    songSheet.setName(item.getDissname());
-                    songSheet.setCreator(item.getCreator().getName());
-                    songSheet.setPic(item.getImgurl());
-                    songSheet.setPlayCount(item.getListennum());
-                    songSheet.setCreateTime(item.getCreateTime());
+                    songSheet.setId(item.getId());
+                    songSheet.setTitle(item.getName());
+                    songSheet.setCreator(item.getCreator().getNickname());
+                    songSheet.setCoverImgUrl(item.getCoverImgUrl());
+                    songSheet.setPlayCount(item.getPlayCount());
+                    songSheet.setDescription(item.getDescription());
+                    songSheet.setSongNum(item.getTrackCount());
                     return songSheet;
                 }).collect(Collectors.toList());
             case "mv":
@@ -63,7 +64,7 @@ public class SongService {
                     return mv;
                 }).collect(Collectors.toList());
             case "album":
-                AlbumSearchResponse albumSearchResponse = restTemplate.getForObject(apiUri + "music/tencent/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, AlbumSearchResponse.class);
+                AlbumSearchResponse albumSearchResponse = restTemplate.getForObject(apiUri + "music/netease/search?key=579621905&limit=48&s=" + keyWord + "&type=" + type, AlbumSearchResponse.class);
                 return albumSearchResponse.getData();
             default:
                 return null;
@@ -71,7 +72,7 @@ public class SongService {
     }
 
     public SongListData getSheet(String sheetId) {
-        SongListResponse songListResponse = restTemplate.getForObject(apiUri + "music/tencent/songList?key=579621905&id=" + sheetId, SongListResponse.class);
+        SongListResponse songListResponse = restTemplate.getForObject(apiUri + "music/netease/songList?key=579621905&id=" + sheetId, SongListResponse.class);
         songListResponse.getData().getSongs().stream().map(SongService::songTimeFormat).collect(Collectors.toList());
         return songListResponse.getData();
     }
@@ -83,7 +84,7 @@ public class SongService {
     }
 
     public Song getSingleSong(String singleId) {
-        SongResponse songResponse = restTemplate.getForObject(apiUri + "music/tencent/song?key=579621905&id=" + singleId, SongResponse.class);
+        SongResponse songResponse = restTemplate.getForObject(apiUri + "music/netease/song?key=579621905&id=" + singleId, SongResponse.class);
         return songResponse.getData();
     }
 

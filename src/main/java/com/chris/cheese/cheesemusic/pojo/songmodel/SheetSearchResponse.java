@@ -1,11 +1,10 @@
 package com.chris.cheese.cheesemusic.pojo.songmodel;
 
-import java.util.List;
 
 public class SheetSearchResponse {
     private String result;
     private String code;
-    private List<SheetDetail> data;
+    private PlayLists data;
 
     public String getResult() {
         return result;
@@ -23,11 +22,11 @@ public class SheetSearchResponse {
         this.code = code;
     }
 
-    public List<SheetDetail> getData() {
+    public PlayLists getData() {
         return data;
     }
 
-    public void setData(List<SheetDetail> data) {
+    public void setData(PlayLists data) {
         this.data = data;
     }
 }

@@ -66,24 +66,32 @@
             <h2 align="center" class="subheader" style="color: white;">歌&nbsp&nbsp单&nbsp&nbsp推&nbsp&nbsp荐</h2>
         </div>
         <div style="margin-top: 10px;">
-            <dl class="sub-nav">
-                <dt>分类:</dt>
-                <dd id="li-165"><a href="/hotSheet/165">为你推荐</a></dd>
-                <dd id="li-28"><a href="/hotSheet/28">民谣</a></dd>
-                <dd id="li-148"><a href="/hotSheet/148">情歌</a></dd>
-                <dd id="li-11"><a href="/hotSheet/11">摇滚</a></dd>
-                <dd id="li-166"><a href="/hotSheet/166">粤语</a></dd>
-                <dd id="li-16"><a href="/hotSheet/16">校园</a></dd>
-            </dl>
         </div>
         <div th:each="sheet : ${sheetList}" class="large-3 columns sheet-block">
             <div class="sheet-pic">
-                <a th:href="'/sheetSongs/' + ${sheet.id}"><img th:src="${sheet.pic}"></a>
+                <a th:href="'/sheetSongs/' + ${sheet.id}"><img th:src="${sheet.coverImgUrl}"></a>
             </div>
             <div class="sheet-title">
-                <a th:text="${sheet.name}" th:href="'/sheetSongs/' + ${sheet.id}"></a>
+                <a th:text="${sheet.title}" th:href="'/sheetSongs/' + ${sheet.id}"></a>
             </div>
             <span class="label" th:text="'播放量：' + ${sheet.playCount}"></span>
+        </div>
+
+        <div class="pagination-centered">
+            <ul class="pagination">
+                <li class="arrow"><a th:href="'/hotSheet/' + ${(offset + 200) % 220}">«</a></li>
+                <li id="p-1"><a th:href="'/hotSheet/0'">1</a></li>
+                <li id="p-2"><a th:href="'/hotSheet/20'">2</a></li>
+                <li id="p-3"><a th:href="'/hotSheet/40'">3</a></li>
+                <li id="p-4"><a th:href="'/hotSheet/60'">4</a></li>
+                <li id="p-5"><a th:href="'/hotSheet/100'">5</a></li>
+                <li id="p-6"><a th:href="'/hotSheet/120'">6</a></li>
+                <li id="p-7"><a th:href="'/hotSheet/140'">7</a></li>
+                <li id="p-8"><a th:href="'/hotSheet/160'">8</a></li>
+                <li id="p-9"><a th:href="'/hotSheet/180'">9</a></li>
+                <li id="p-10"><a th:href="'/hotSheet/200'">10</a></li>
+                <li class="arrow"><a th:href="'/hotSheet/' + ${(offset + 20) % 220}">»</a></li>
+            </ul>
         </div>
 
     </div>

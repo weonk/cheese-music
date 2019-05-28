@@ -17,7 +17,7 @@
             <section class="top-bar-section">
                 <ul class="left">
                     <li id="hot-single" th:class="${activeParam}==1?'active':''"><a th:href="${activeParam}==1?'#':'/hotSingle'">热门单曲</a></li>
-                    <li id="hot-list" th:class="${activeParam}==2?'active':''"><a th:href="${activeParam}==2?'#':'/hotSheet/165'">热门歌单</a></li>
+                    <li id="hot-list" th:class="${activeParam}==2?'active':''"><a th:href="${activeParam}==2?'#':'/hotSheet/0'">热门歌单</a></li>
                     <li id="hot-mv" th:class="${activeParam}==3?'active':''"><a th:href="${activeParam}==3?'#':'/hotMV/0/0'">热门MV</a></li>
                     <li id="hot-pick" th:class="${activeParam}==4?'active':''"><a th:href="${activeParam}==4?'#':${'/songTable/' + session.user.id}">点歌台</a></li>
                     <li id="hot-his" th:class="${activeParam}==5?'active':''"><a th:href="${activeParam}==5?'#':${'/history/' + session.user.id}">历史记录</a></li>
@@ -44,6 +44,11 @@
         <h3 class="subheader" align="center">感谢你的点歌</h3>
         <label>这首歌送给：
             <input id="song-order-name">
+        </label>
+        <label>他（她）的邮箱（可选填）：
+            <div class="parentCls">
+                <input id="song-order-email" class="inputElem">
+            </div>
         </label>
         <label>留言给他（她）：
             <textarea id="song-order-leave" rows="6" placeholder="请不要超过500字"></textarea>

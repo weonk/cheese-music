@@ -2,10 +2,11 @@ package com.chris.cheese.cheesemusic.pojo.songmodel;
 
 public class SongSheet {
     private String id;
-    private String name;
+    private String title;
     private String creator;
-    private String createTime;
-    private String pic;
+    private String description;
+    private String coverImgUrl;
+    private String songNum;
     private String playCount;
 
     public String getId() {
@@ -16,12 +17,12 @@ public class SongSheet {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCreator() {
@@ -32,20 +33,28 @@ public class SongSheet {
         this.creator = creator;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getPic() {
-        return pic;
+    public String getCoverImgUrl() {
+        return coverImgUrl;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setCoverImgUrl(String coverImgUrl) {
+        this.coverImgUrl = coverImgUrl;
+    }
+
+    public String getSongNum() {
+        return songNum;
+    }
+
+    public void setSongNum(String songNum) {
+        this.songNum = songNum;
     }
 
     public String getPlayCount() {

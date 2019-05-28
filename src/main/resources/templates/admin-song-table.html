@@ -149,7 +149,7 @@
     }
 
     if (window.WebSocket) {
-        chatSocket = new WebSocket("ws://localhost:8080/chatSocket/ADMIN");
+        chatSocket = new WebSocket("ws://47.106.38.136:8081/chatSocket/ADMIN");
         chatSocket.onmessage = function (event) {
             var ta = $('#responseText');
             ta.html(ta.html() + '<br>' + event.data);
@@ -163,7 +163,7 @@
             var ta = $('#responseText');
         };
 
-        songSocket = new WebSocket("ws://localhost:8080/songSocket/ADMIN");
+        songSocket = new WebSocket("ws://47.106.38.136:8081/songSocket/ADMIN");
         songSocket.onopen = function (ev) {
             console.log("连接开启");
         }

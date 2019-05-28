@@ -16,7 +16,7 @@
     <link href="/css/common-style.css" rel="stylesheet">
     <script src="/js/canvas/canvas-particle.js"></script>
     <script src="/js/common.js"></script>
-
+    <script src="/js/emailAutoComplete.js"></script>
 </head>
 <body id="mydiv">
     <div th:replace="commons/common::header(1)"></div>
@@ -92,26 +92,57 @@
             if ([[${session.user}]]) {
                 var toName = $('#song-order-name').val().trim();
                 var leave = $('#song-order-leave').val().trim();
+                var email = $('#song-order-email').val().trim();
                 var songId = pickSongId;
 
                 if (toName === '' || leave.length > 500) {
                     $('#pick-error-info').fadeIn();
                 } else {
-                    $.post(
-                        '/songOrder/pickSong',
-                        {
-                            userId : [[${session.user.id}]],
-                            songId : songId,
-                            toName : toName,
-                            leaveMessage : leave
-                        }, function (data) {
-                            if (data === 'success') {
-                                alert('点歌成功！');
-                            } else {
-                                alert('点歌失败，请稍后再试！');
+                    if (email === '') {
+                        $.post(
+                            '/songOrder/pickSong',
+                            {
+                                userId : [[${session.user.id}]],
+                                songId : songId,
+                                toName : toName,
+                                leaveMessage : leave
+                            }, function (data) {
+                                if (data === 'success') {
+                                    alert('点歌成功！');
+                                } else {
+                                    alert('点歌失败，请稍后再试！');
+                                }
                             }
-                        }
-                    )
+                        )
+                    } else {
+                        $.post(
+                            '/songOrder/pickSong',
+                            {
+                                userId : [[${session.user.id}]],
+                                songId : songId,
+                                toName : toName,
+                                leaveMessage : leave
+                            }, function (data) {
+                                if (data === 'success') {
+                                    alert('点歌成功！');
+                                } else {
+                                    alert('点歌失败，请稍后再试！');
+                                }
+                            }
+                        )
+
+                        $.post(
+                            '/mail/send',
+                            {
+                                to : email,
+                                userAccount : [[${session.user.account}]],
+                                leaveMessage : leave
+                            }, function (data) {
+                                
+                            }
+                        )
+                    }
+
                 }
             } else {
                 window.location.href = '/';

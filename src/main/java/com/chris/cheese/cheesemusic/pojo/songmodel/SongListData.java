@@ -3,60 +3,69 @@ package com.chris.cheese.cheesemusic.pojo.songmodel;
 import java.util.List;
 
 public class SongListData {
-    private String id;
-    private String title;
-    private String desc;
-    private String author;
-    private String songnum;
-    private String logo;
+    private String songListId;
+    private String songListName;
+    private String songListDescription;
+    private String songListUserId;
+    private String songListCount;
+    private String songListPic;
+    private String songListPlayCount;
     private List<Song> songs;
 
-    public String getId() {
-        return id;
+    public String getSongListId() {
+        return songListId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSongListId(String songListId) {
+        this.songListId = songListId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSongListName() {
+        return songListName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSongListName(String songListName) {
+        this.songListName = songListName;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getSongListDescription() {
+        return songListDescription;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setSongListDescription(String songListDescription) {
+        this.songListDescription = songListDescription;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getSongListUserId() {
+        return songListUserId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setSongListUserId(String songListUserId) {
+        this.songListUserId = songListUserId;
     }
 
-    public String getSongnum() {
-        return songnum;
+    public String getSongListCount() {
+        return songListCount;
     }
 
-    public void setSongnum(String songnum) {
-        this.songnum = songnum;
+    public void setSongListCount(String songListCount) {
+        this.songListCount = songListCount;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getSongListPic() {
+        return songListPic;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setSongListPic(String songListPic) {
+        this.songListPic = songListPic;
+    }
+
+    public String getSongListPlayCount() {
+        return songListPlayCount;
+    }
+
+    public void setSongListPlayCount(String songListPlayCount) {
+        this.songListPlayCount = songListPlayCount;
     }
 
     public List<Song> getSongs() {

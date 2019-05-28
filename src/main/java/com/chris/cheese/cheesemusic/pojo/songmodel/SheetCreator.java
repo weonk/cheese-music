@@ -1,94 +1,60 @@
 package com.chris.cheese.cheesemusic.pojo.songmodel;
 
+import java.util.List;
+
 public class SheetCreator {
-    private String avatarUrl;
-    private String creator_uin;
-    private String encrypt_uin;
-    private String followflag;
-    private String isVip;
-    private String name;
-    private String qq;
-    private String singerid;
-    private String singermid;
-    private String type;
+    private String nickname;
+    private String userId;
+    private String userType;
+    private String authStatus;
+    private List<String> expertTags;
+    private Object experts;
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getCreator_uin() {
-        return creator_uin;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setCreator_uin(String creator_uin) {
-        this.creator_uin = creator_uin;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getEncrypt_uin() {
-        return encrypt_uin;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setEncrypt_uin(String encrypt_uin) {
-        this.encrypt_uin = encrypt_uin;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
-    public String getFollowflag() {
-        return followflag;
+    public String getAuthStatus() {
+        return authStatus;
     }
 
-    public void setFollowflag(String followflag) {
-        this.followflag = followflag;
+    public void setAuthStatus(String authStatus) {
+        this.authStatus = authStatus;
     }
 
-    public String getIsVip() {
-        return isVip;
+    public List<String> getExpertTags() {
+        return expertTags;
     }
 
-    public void setIsVip(String isVip) {
-        this.isVip = isVip;
+    public void setExpertTags(List<String> expertTags) {
+        this.expertTags = expertTags;
     }
 
-    public String getName() {
-        return name;
+    public Object getExperts() {
+        return experts;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public String getSingerid() {
-        return singerid;
-    }
-
-    public void setSingerid(String singerid) {
-        this.singerid = singerid;
-    }
-
-    public String getSingermid() {
-        return singermid;
-    }
-
-    public void setSingermid(String singermid) {
-        this.singermid = singermid;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public void setExperts(Object experts) {
+        this.experts = experts;
     }
 }

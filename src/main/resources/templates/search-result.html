@@ -179,7 +179,7 @@
             <dl class="sub-nav">
                 <dt>分类:</dt>
                 <dd id="type-song"><a th:href="'/doSearch/song/' + ${keyWord}">单曲</a></dd>
-                <dd id="type-album"><a th:href="'/doSearch/album/' + ${keyWord}">专辑</a></dd>
+<!--                <dd id="type-album"><a th:href="'/doSearch/album/' + ${keyWord}">专辑</a></dd>-->
                 <dd id="type-mv"><a th:href="'/doSearch/mv/' + ${keyWord}">MV</a></dd>
                 <dd id="type-list"><a th:href="'/doSearch/list/' + ${keyWord}">歌单</a></dd>
             </dl>
@@ -215,18 +215,18 @@
             <div id="aplayer"></div>
         </div>
 
-        <div th:if="${type} == 'album'" th:each="album : ${resultList}" class="large-3 columns album-block">
-            <div class="album-pic">
-                <a th:href="'/albumSongs/' + ${album.albumMID}"><img th:src="${album.albumPic}"/></a>
-            </div>
-            <div class="album-title">
-                <a th:text="${album.albumName}" th:href="'/albumSongs/' + ${album.albumMID}"></a><br>
-            </div>
-            <div class="album-singer">
-                <a th:text="${album.singerName}"></a>
-            </div>
-            <span class="label" th:text="'发行日期：' + ${album.publicTime}"></span>
-        </div>
+<!--        <div th:if="${type} == 'album'" th:each="album : ${resultList}" class="large-3 columns album-block">-->
+<!--            <div class="album-pic">-->
+<!--                <a th:href="'/albumSongs/' + ${album.albumMID}"><img th:src="${album.albumPic}"/></a>-->
+<!--            </div>-->
+<!--            <div class="album-title">-->
+<!--                <a th:text="${album.albumName}" th:href="'/albumSongs/' + ${album.albumMID}"></a><br>-->
+<!--            </div>-->
+<!--            <div class="album-singer">-->
+<!--                <a th:text="${album.singerName}"></a>-->
+<!--            </div>-->
+<!--            <span class="label" th:text="'发行日期：' + ${album.publicTime}"></span>-->
+<!--        </div>-->
 
         <div th:if="${type} == 'mv'" th:each="mv : ${resultList}" class="large-3 columns mv-block">
             <div class="mv-pic">
@@ -245,10 +245,10 @@
 
         <div th:if="${type} == 'list'" th:each="sheet : ${resultList}" class="large-3 columns sheet-block">
             <div class="sheet-pic">
-                <a th:href="'/sheetSongs/' + ${sheet.id}"><img th:src="${sheet.pic}"></a>
+                <a th:href="'/sheetSongs/' + ${sheet.id}"><img th:src="${sheet.coverImgUrl}"></a>
             </div>
             <div class="sheet-title">
-                <a th:href="'/sheetSongs/' + ${sheet.id}" th:text="${sheet.name}"></a>
+                <a th:href="'/sheetSongs/' + ${sheet.id}" th:text="${sheet.title}"></a>
             </div>
             <span class="label" th:text="'播放量：' + ${sheet.playCount}"></span>
         </div>

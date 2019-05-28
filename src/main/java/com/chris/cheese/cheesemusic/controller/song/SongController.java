@@ -27,10 +27,10 @@ public class SongController {
         return "hot-single";
     }
 
-    @RequestMapping("/hotSheet/{categoryId}")
-    public String hotSheet(@PathVariable(name = "categoryId") String categoryId, Model model) {
-        model.addAttribute("sheetList", songService.getSongSheet(categoryId));
-        model.addAttribute("categoryId", categoryId);
+    @RequestMapping("/hotSheet/{offset}")
+    public String hotSheet(@PathVariable(name = "offset") Integer offset, Model model) {
+        model.addAttribute("sheetList", songService.getSongSheet(offset));
+        model.addAttribute("offset", offset);
         return "hot-sheet";
     }
 

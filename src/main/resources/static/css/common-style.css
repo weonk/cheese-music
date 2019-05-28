@@ -67,3 +67,20 @@ body {
 .self-name {
     font-weight: bold;
 }
+
+ul, li {
+    list-style:none;
+}
+.parentCls {
+    height:auto; margin:0 auto;
+}
+.parentCls ul{ padding-left: 10px; padding-right: 10px; }
+.auto-tip li { width: 100%; height: 30px; line-height: 30px; font-size: 14px;}
+.auto-tip li.hoverBg {
+    background:#ddd;
+    cursor:pointer;
+}
+
+.hidden {
+    display:none;
+}

@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 @Service
@@ -40,11 +41,16 @@ public class MailService {
      * @param subject 主题
      * @param content 邮件内容
      */
-    public void sendHtmlMail(String to,String subject,String content) throws Exception {
+    public void sendHtmlMail(String to,String userAccount,String leaveMessage) throws Exception {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true);
 
-        helper.setFrom(from);
+        String subject = userAccount + "为你点了一首歌，快去看看吧";
+        String content = userAccount + "为你点了一首歌</br>";
+        content += "</hr>";
+        content += "留言： " + leaveMessage + "</br>";
+        content += "<a href=\"http://localhost:8080\">点击查看</a>";
+        helper.setFrom(new InternetAddress(from,"芝士音乐","UTF-8"));
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(content,true);

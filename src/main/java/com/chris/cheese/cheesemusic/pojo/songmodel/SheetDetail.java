@@ -1,33 +1,32 @@
 package com.chris.cheese.cheesemusic.pojo.songmodel;
 
 public class SheetDetail {
-    private String copyrightnum;
-    private String createTime;
+    private String id;
+    private String name;
     private SheetCreator creator;
-    private String diss_status;
-    private String dissid;
-    private String dissname;
-    private String docid;
-    private String imgurl;
-    private String introduction;
-    private String listennum;
-    private String score;
-    private String song_count;
+    private String coverImgUrl;
+    private boolean subscribed;
+    private String trackCount;
+    private String userId;
+    private String playCount;
+    private String bookCount;
+    private String description;
+    private boolean highQuality;
 
-    public String getCopyrightnum() {
-        return copyrightnum;
+    public String getId() {
+        return id;
     }
 
-    public void setCopyrightnum(String copyrightnum) {
-        this.copyrightnum = copyrightnum;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getName() {
+        return name;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public SheetCreator getCreator() {
@@ -38,75 +37,67 @@ public class SheetDetail {
         this.creator = creator;
     }
 
-    public String getDiss_status() {
-        return diss_status;
+    public String getCoverImgUrl() {
+        return coverImgUrl;
     }
 
-    public void setDiss_status(String diss_status) {
-        this.diss_status = diss_status;
+    public void setCoverImgUrl(String coverImgUrl) {
+        this.coverImgUrl = coverImgUrl;
     }
 
-    public String getDissid() {
-        return dissid;
+    public boolean isSubscribed() {
+        return subscribed;
     }
 
-    public void setDissid(String dissid) {
-        this.dissid = dissid;
+    public void setSubscribed(boolean subscribed) {
+        this.subscribed = subscribed;
     }
 
-    public String getDissname() {
-        return dissname;
+    public String getTrackCount() {
+        return trackCount;
     }
 
-    public void setDissname(String dissname) {
-        this.dissname = dissname;
+    public void setTrackCount(String trackCount) {
+        this.trackCount = trackCount;
     }
 
-    public String getDocid() {
-        return docid;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setDocid(String docid) {
-        this.docid = docid;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getImgurl() {
-        return imgurl;
+    public String getPlayCount() {
+        return playCount;
     }
 
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
+    public void setPlayCount(String playCount) {
+        this.playCount = playCount;
     }
 
-    public String getIntroduction() {
-        return introduction;
+    public String getBookCount() {
+        return bookCount;
     }
 
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
+    public void setBookCount(String bookCount) {
+        this.bookCount = bookCount;
     }
 
-    public String getListennum() {
-        return listennum;
+    public String getDescription() {
+        return description;
     }
 
-    public void setListennum(String listennum) {
-        this.listennum = listennum;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getScore() {
-        return score;
+    public boolean isHighQuality() {
+        return highQuality;
     }
 
-    public void setScore(String score) {
-        this.score = score;
-    }
-
-    public String getSong_count() {
-        return song_count;
-    }
-
-    public void setSong_count(String song_count) {
-        this.song_count = song_count;
+    public void setHighQuality(boolean highQuality) {
+        this.highQuality = highQuality;
     }
 }
